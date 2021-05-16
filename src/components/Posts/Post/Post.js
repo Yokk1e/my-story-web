@@ -7,9 +7,11 @@ import {
   Button,
   Typography,
 } from "@material-ui/core";
+import { useDispatch } from "react-redux";
 import ThumbUpAltIcon from "@material-ui/icons/ThumbUpAlt";
 import DeleteIcon from "@material-ui/icons/Delete";
 import MoreHorizeIcon from "@material-ui/icons/MoreHoriz";
+import { deletePost, likePost } from "../../../actions/posts";
 import relativeTime from "dayjs/plugin/relativeTime";
 import dayjs from "dayjs";
 import useStyles from "./styles";
@@ -17,6 +19,7 @@ import useStyles from "./styles";
 dayjs.extend(relativeTime);
 const Post = ({ post, setCurrentId }) => {
   const classes = useStyles();
+  const dispatch = useDispatch();
   return (
     <Card className={classes.card}>
       <CardMedia
@@ -48,17 +51,25 @@ const Post = ({ post, setCurrentId }) => {
         {post.title}
       </Typography>
       <CardContent>
-        <Typography variant="h5" gutterBottom>
+        <Typography variant="body2" color="textSecondary" component="p">
           {post.message}
         </Typography>
       </CardContent>
       <CardActions className={classes.cardActions}>
-        <Button size="small" color="primary" onClick={() => {}}>
+        <Button
+          size="small"
+          color="primary"
+          onClick={() => dispatch(likePost(post._id))}
+        >
           <ThumbUpAltIcon fontSize="small" />
-          Like
+          &nbsp; Like &nbsp;
           {post.likeCount}
         </Button>
-        <Button size="small" color="primary" onClick={() => {}}>
+        <Button
+          size="small"
+          color="primary"
+          onClick={() => dispatch(deletePost(post._id))}
+        >
           <DeleteIcon fontSize="small" />
           Delete
         </Button>
