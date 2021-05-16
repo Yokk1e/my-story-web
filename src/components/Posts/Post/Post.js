@@ -1,8 +1,63 @@
 import React from "react";
+import {
+  Card,
+  CardActions,
+  CardContent,
+  CardMedia,
+  Button,
+  Typography,
+} from "@material-ui/core";
+import ThumbUpAltIcon from "@material-ui/icons/ThumbUpAlt";
+import DeleteIcon from "@material-ui/icons/Delete";
+import MoreHorizeIcon from "@material-ui/icons/MoreHoriz";
+import relativeTime from "dayjs/plugin/relativeTime";
+import dayjs from "dayjs";
 import useStyles from "./styles";
-const Post = () => {
+
+dayjs.extend(relativeTime);
+const Post = ({ post }) => {
   const classes = useStyles();
-  return <h1>Post</h1>;
+  return (
+    <Card className={classes.card}>
+      <CardMedia
+        className={classes.media}
+        image={post.selectedFile}
+        title={post.title}
+      />
+      <div className={classes.overlay}>
+        <Typography variant="h6">{post.creator}</Typography>
+        <Typography variant="body2">
+          {dayjs(post.createdAt).fromNow()}
+        </Typography>
+      </div>
+      <div className={classes.overlay2}>
+        <Button style={{ color: "white" }} size="small" onClick={() => {}}>
+          <MoreHorizeIcon fontSize="default" />
+        </Button>
+      </div>
+      <div className={classes.details}>
+        <Typography variant="body2" color="textSecondary">
+          {post.tags.map((tag) => `#${tag} `)}
+        </Typography>
+      </div>
+      <CardContent>
+        <Typography className={classes.title} variant="h5" gutterBottom>
+          {post.message}
+        </Typography>
+      </CardContent>
+      <CardActions className={classes.cardActions}>
+        <Button size="small" color="primary" onClick={() => {}}>
+          <ThumbUpAltIcon fontSize="small" />
+          Like
+          {post.likeCount}
+        </Button>
+        <Button size="small" color="primary" onClick={() => {}}>
+          <DeleteIcon fontSize="small" />
+          Delete
+        </Button>
+      </CardActions>
+    </Card>
+  );
 };
 
 export default Post;
