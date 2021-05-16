@@ -6,7 +6,6 @@ import {
   Grid,
   Container,
   Typography,
-  TextField,
 } from "@material-ui/core";
 import { useDispatch } from "react-redux";
 import { GoogleLogin } from "react-google-login";
@@ -16,22 +15,42 @@ import Icon from "./icon";
 import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
 import useStyles from "./styles";
 import Input from "./Input";
+import { signin, signup } from "../../actions/auths";
+
+const authForm = {
+  firstName: "",
+  lastName: "",
+  email: "",
+  password: "",
+  confirmPassword: "",
+};
 
 const Auth = () => {
   const classes = useStyles();
   const [showPassword, setShowPassword] = useState(false);
   const [isSignup, setIsSignup] = useState(false);
+  const [formData, setFormData] = useState(authForm);
   const dispatch = useDispatch();
   const history = useHistory();
 
   const handleShowPassword = () => setShowPassword(!showPassword);
-  const handleSubmit = () => {};
+  const handleSubmit = (e) => {
+    e.preventDefault();
 
-  const handleChange = () => {};
+    if (isSignup) {
+      dispatch(signup(formData, history));
+    } else {
+      dispatch(signin(formData, history));
+    }
+  };
+
+  const handleChange = (e) => {
+    setFormData({ ...formData, [e.target.name]: e.target.value });
+  };
 
   const switchMode = () => {
     setIsSignup(!isSignup);
-    handleShowPassword(false);
+    setShowPassword(false);
   };
 
   const googleSuccess = async (res) => {
